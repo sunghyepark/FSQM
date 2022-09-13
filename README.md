@@ -16,6 +16,24 @@ If you have any questions feel free to contact us using shpark96@postech.ac.kr
 ## Overview
 
 ## Usage
+### Installation
+```
+[~/FSQM] mkdir build && cd build
+[~/FSQM/build] cmake ..
+[~/FSQM/build] make -j
+```
+
+### Run
+```
+[~/FSQM/tool] python3 run.py [circuit_index]
+```
+or
+```
+[~/FSQM/tool] python3 run.py all
+```
+
+
+If you want to know more about "run.py", put this command `python3 run.py help'
 
 ## Reference
 If you use out mapping algorithm for your research, we would be thankful if you referred to it by citing the following publication
