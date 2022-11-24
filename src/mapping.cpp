@@ -65,63 +65,45 @@ void Qcircuit::QMapper::Circuit_Mapping(Circuit& dgraph, ARCHITECTURE archi, boo
         //(3) Solve connectivity constraint
         if(!act_list.empty())
         {
+            pair<int, int> SWAP;
+            int gateid;
+            double max_cost;
+            find_max_cost(SWAP, gateid, max_cost, MCPE_test, act_list, MCPE_flag);
+            
+            std::list<int>::iterator it;
             if(BRIDGE_MODE)
+                it = std::find(act_dist2_list.begin(), act_dist2_list.end(), gateid);
+            if(BRIDGE_MODE == 1 && it != act_dist2_list.end() && max_cost <= param_gamma*10) 
             {
-                pair<int, int> SWAP;
-                int gateid;
-                double max_cost;
-                find_max_cost(SWAP, gateid, max_cost, MCPE_test, act_list, MCPE_flag);
+                // push bridge                
+                int control = dgraph.nodeset[gateid].control;
+                int target  = dgraph.nodeset[gateid].target;
+                Dlist[control].pop_front();
+                Dlist[target ].pop_front();
+                frozen[control] = false;
+                frozen[target ] = false;
                 
-                std::list<int>::iterator it = std::find(act_dist2_list.begin(), act_dist2_list.end(), gateid);
-                if(it != act_dist2_list.end() && max_cost <= param_gamma*10) 
-                {
-                    // push bridge                
-                    int control = dgraph.nodeset[gateid].control;
-                    int target  = dgraph.nodeset[gateid].target;
-                    Dlist[control].pop_front();
-                    Dlist[target ].pop_front();
-                    frozen[control] = false;
-                    frozen[target ] = false;
-                    
-                    add_bridge(layout_L[control], layout_L[target], FinalCircuit);
-                    
-                    #if Dlist_all_mode
-                    Dlist_all[control].pop_front();
-                    Dlist_all[target ].pop_front();
-                    #endif
+                add_bridge(layout_L[control], layout_L[target], FinalCircuit);
                 
-                    act_list.erase( remove(act_list.begin(), act_list.end(), gateid) );
-                }
-                else
-                {
-                    if(MCPE_flag.size() > history_size)
-                        MCPE_flag.erase(MCPE_flag.begin());
-                    MCPE_flag.push_back(MCPE_test[0]);
-                    
-                    //cout << "we swap " << SWAP << endl;
-                    int f_SWAPqubit = qubit_Q[SWAP.first];
-                    int s_SWAPqubit = qubit_Q[SWAP.second];
-                    add_swap(f_SWAPqubit,    s_SWAPqubit, FinalCircuit);
-                    layout_swap(f_SWAPqubit, s_SWAPqubit);
-                
-                }
+                #if Dlist_all_mode
+                Dlist_all[control].pop_front();
+                Dlist_all[target ].pop_front();
+                #endif
+            
+                act_list.erase( remove(act_list.begin(), act_list.end(), gateid) );
             }
             else
             {
-                pair<int, int> SWAP;
-                int gateid;
-                double max_cost;
-                find_max_cost(SWAP, gateid, max_cost, MCPE_test, act_list, MCPE_flag);
-    
                 if(MCPE_flag.size() > history_size)
                     MCPE_flag.erase(MCPE_flag.begin());
                 MCPE_flag.push_back(MCPE_test[0]);
-
+                
                 //cout << "we swap " << SWAP << endl;
                 int f_SWAPqubit = qubit_Q[SWAP.first];
                 int s_SWAPqubit = qubit_Q[SWAP.second];
                 add_swap(f_SWAPqubit,    s_SWAPqubit, FinalCircuit);
                 layout_swap(f_SWAPqubit, s_SWAPqubit);
+            
             }
         }
         loop_end = 0; 

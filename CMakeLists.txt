@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.20)
 set(CMAKE_C_COMPILER "/tool/gcc/install/8.1.0/bin/gcc")
 set(CMAKE_CXX_COMPILER "/tool/gcc/install/8.1.0/bin/g++")
 set(SPARSEHASH_INCLUDE_DIR "/tool/cpplib/sparsehash/install/include")
+set(Boost_INCLUDE_DIR "/tool/cpplib/boost/install/1.79.0/include")
 
 project(FSQM)
 
@@ -27,8 +28,6 @@ set(SRC
         src/outputwriter.cpp
         src/mymeasure.cpp
         src/print.cpp)
-
-FIND_PACKAGE(Boost 1.60 COMPONENTS program_options REQUIRED)
 
 add_executable(FSQM src/main.cpp ${SRC} ${TOOL})
 
