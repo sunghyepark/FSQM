@@ -5,7 +5,7 @@ This code is written by Sunghye Park(shpark96@postech.ac.kr) and Minhyuk Kweon(m
 
 If you have any questions feel free to contact us using shpark96@postech.ac.kr
 
-(CSDL Lab. in POSTECH, South Korea. http://csdl.postech.ac.kr)
+(CSDL in POSTECH, South Korea. http://csdl.postech.ac.kr)
 
 ## Related paper
 - Title: [A Fast and Scalable Qubit-Mapping Method for Noisy Intermediate-Scale Quantum Computers](https://dl.acm.org/doi/abs/10.1145/3489517.3530402)
